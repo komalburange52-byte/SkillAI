@@ -1411,3 +1411,354 @@
   }
 
 }
+/* ================= ROADMAP PAGE ================= */
+
+.roadmap-page {
+    min-height: 100vh;
+    padding: 35px;
+    color: #e8ecf7;
+}
+
+.roadmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+}
+
+.roadmap-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+.roadmap-header > div > p:last-child {
+    color: #7f8aa3;
+    font-size: 14px;
+}
+
+.roadmap-summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px;
+    margin-bottom: 35px;
+    border-radius: 18px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.roadmap-summary-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.12);
+}
+
+.roadmap-summary p {
+    color: #a855f7;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.roadmap-summary h2 {
+    margin: 5px 0;
+}
+
+.roadmap-summary span {
+    color: #7f8aa3;
+    font-size: 13px;
+}
+
+.roadmap-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.roadmap-step {
+    position: relative;
+    display: flex;
+    gap: 20px;
+}
+
+.roadmap-number {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    color: #c084fc;
+    font-weight: 700;
+}
+
+.roadmap-line {
+    position: absolute;
+    left: 20px;
+    top: 42px;
+    bottom: -20px;
+    width: 1px;
+    background: rgba(168, 85, 247, 0.25);
+}
+
+.roadmap-step:last-child .roadmap-line {
+    display: none;
+}
+
+.roadmap-card {
+    flex: 1;
+    margin-bottom: 25px;
+    padding: 25px;
+    border-radius: 18px;
+    background: rgba(16, 23, 45, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: 0.3s ease;
+}
+
+.roadmap-card:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+    transform: translateY(-2px);
+}
+
+.roadmap-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.roadmap-level {
+    color: #a855f7;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.roadmap-card h2 {
+    margin-top: 6px;
+}
+
+.roadmap-status {
+    height: fit-content;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.1);
+}
+
+.roadmap-description {
+    margin: 14px 0;
+    color: #8d98b0;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.roadmap-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.roadmap-skills span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    color: #aeb8cc;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 12px;
+}
+
+.roadmap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.roadmap-footer > span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #69758d;
+    font-size: 12px;
+}
+
+.roadmap-footer button,
+.roadmap-button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    background: rgba(168, 85, 247, 0.15);
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.roadmap-footer button:hover,
+.roadmap-button:hover {
+    background: rgba(168, 85, 247, 0.25);
+}
+
+@media (max-width: 700px) {
+
+    .roadmap-page {
+        padding: 20px;
+    }
+
+    .roadmap-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .roadmap-card-header {
+        flex-direction: column;
+    }
+
+    .roadmap-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+/* ================= ANALYZE MY SKILLS BUTTON ================= */
+
+.analyze-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.analyze-button-wrapper button {
+  position: relative;
+  padding: 14px 32px;
+  border: 1px solid rgba(168, 85, 247, 0.55);
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #6366f1,
+    #3b82f6
+  );
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(99, 102, 241, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Hover effect */
+
+.analyze-button-wrapper button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 30px rgba(99, 102, 241, 0.4),
+    0 0 18px rgba(168, 85, 247, 0.2);
+
+  filter: brightness(1.08);
+}
+
+
+/* Click effect */
+
+.analyze-button-wrapper button:active {
+  transform: translateY(0);
+  box-shadow:
+    0 5px 15px rgba(99, 102, 241, 0.25);
+}
+
+
+/* Disabled / Analyzing state */
+
+.analyze-button-wrapper button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+
+  box-shadow:
+    0 5px 15px rgba(99, 102, 241, 0.15);
+}
+/* ================= DYNAMIC PRIORITY SKILLS ================= */
+
+.priority-empty {
+  width: 100%;
+  min-height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+  padding: 24px;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+
+  color: #7f8aa3;
+
+  font-size: 13px;
+}
+
+.priority-empty svg {
+  color: #a855f7;
+}
+
+.priority-content {
+  flex: 1;
+}
+
+.priority-content h3 {
+  margin-bottom: 4px;
+}
+
+.priority-content p {
+  margin-bottom: 4px;
+}
+
+.priority-content small {
+  color: #66728c;
+  font-size: 11px;
+}
+
+.priority-card.good strong {
+  color: #4ade80;
+}
+
+.priority-card.medium strong {
+  color: #fbbf24;
+}
+
+.priority-card.high strong {
+  color: #ff5c70;
+}
