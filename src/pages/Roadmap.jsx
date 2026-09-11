@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import {
     ArrowLeft,
@@ -14,7 +15,9 @@ import {
 
 import "../App.css";
 
+
 function Roadmap() {
+
     const location = useLocation();
 
     const selectedRole =
@@ -23,206 +26,199 @@ function Roadmap() {
     const prioritySkills =
         location.state?.prioritySkills || [];
 
-    const roadmapData = {
-        NLP: {
-            icon: Brain,
-            description:
-                "Build strong Natural Language Processing fundamentals and learn how AI systems understand and process human language.",
-            topics: [
-                "Text preprocessing",
-                "Tokenization",
-                "TF-IDF",
-                "Word embeddings",
-                "Transformers",
-            ],
-            duration: "2-3 Weeks",
-        },
 
-        "Deep Learning": {
-            icon: Brain,
-            description:
-                "Strengthen your deep learning knowledge and learn how neural networks are used to solve complex AI problems.",
-            topics: [
-                "Neural networks",
-                "Backpropagation",
-                "CNN",
-                "Transfer learning",
-                "Model optimization",
-            ],
-            duration: "3-4 Weeks",
-        },
+    // ================= STATE =================
 
-        MLOps: {
-            icon: Rocket,
-            description:
-                "Learn how machine learning models are deployed, monitored and maintained in real-world production environments.",
-            topics: [
-                "Model deployment",
-                "Docker",
-                "APIs with FastAPI",
-                "CI/CD",
-                "Model monitoring",
-            ],
-            duration: "2-3 Weeks",
-        },
+    const [roadmap, setRoadmap] = useState([]);
 
-        Python: {
-            icon: Code2,
-            description:
-                "Strengthen your Python programming skills for AI and data science development.",
-            topics: [
-                "Python fundamentals",
-                "Object-oriented programming",
-                "NumPy",
-                "Pandas",
-                "Clean code",
-            ],
-            duration: "2 Weeks",
-        },
+    const [loading, setLoading] = useState(true);
 
-        "Machine Learning": {
-            icon: Brain,
-            description:
-                "Improve your machine learning fundamentals and learn how to build and evaluate predictive models.",
-            topics: [
-                "Supervised learning",
-                "Unsupervised learning",
-                "Feature engineering",
-                "Model evaluation",
-                "Hyperparameter tuning",
-            ],
-            duration: "3-4 Weeks",
-        },
+    const [error, setError] = useState(null);
 
-        Statistics: {
-            icon: Target,
-            description:
-                "Develop the statistical foundation required for data science and machine learning.",
-            topics: [
-                "Probability",
-                "Descriptive statistics",
-                "Distributions",
-                "Hypothesis testing",
-                "Correlation",
-            ],
-            duration: "2 Weeks",
-        },
 
-        SQL: {
-            icon: Code2,
-            description:
-                "Improve your SQL skills for working with databases and analyzing data.",
-            topics: [
-                "SELECT queries",
-                "JOIN operations",
-                "GROUP BY",
-                "Subqueries",
-                "Window functions",
-            ],
-            duration: "1-2 Weeks",
-        },
+    // ================= ICON MAPPING =================
 
-        "Data Visualization": {
-            icon: Target,
-            description:
-                "Learn how to communicate insights effectively using data visualization.",
-            topics: [
-                "Charts and graphs",
-                "Matplotlib",
-                "Seaborn",
-                "Dashboards",
-                "Data storytelling",
-            ],
-            duration: "1-2 Weeks",
-        },
+    const getSkillIcon = (skillName) => {
 
-        TensorFlow: {
-            icon: Brain,
-            description:
-                "Develop practical skills for building and training deep learning models with TensorFlow.",
-            topics: [
-                "TensorFlow basics",
-                "Neural networks",
-                "Model training",
-                "CNN models",
-                "Model deployment",
-            ],
-            duration: "2-3 Weeks",
-        },
+        if (
+            skillName === "NLP" ||
+            skillName === "Deep Learning" ||
+            skillName === "Machine Learning" ||
+            skillName === "TensorFlow"
+        ) {
+            return Brain;
+        }
 
-        JavaScript: {
-            icon: Code2,
-            description:
-                "Strengthen your JavaScript skills for modern web development.",
-            topics: [
-                "ES6+",
-                "Functions",
-                "Async JavaScript",
-                "Promises",
-                "API integration",
-            ],
-            duration: "2 Weeks",
-        },
+        if (skillName === "MLOps") {
+            return Rocket;
+        }
 
-        React: {
-            icon: Code2,
-            description:
-                "Build modern interactive web applications using React.",
-            topics: [
-                "Components",
-                "Props and state",
-                "Hooks",
-                "React Router",
-                "API integration",
-            ],
-            duration: "2-3 Weeks",
-        },
+        if (
+            skillName === "Python" ||
+            skillName === "JavaScript" ||
+            skillName === "React" ||
+            skillName === "Node.js" ||
+            skillName === "MongoDB" ||
+            skillName === "Express.js" ||
+            skillName === "SQL"
+        ) {
+            return Code2;
+        }
 
-        "Node.js": {
-            icon: Code2,
-            description:
-                "Learn backend development using Node.js.",
-            topics: [
-                "Node.js fundamentals",
-                "Express",
-                "REST APIs",
-                "Authentication",
-                "Database integration",
-            ],
-            duration: "2-3 Weeks",
-        },
-
-        MongoDB: {
-            icon: Code2,
-            description:
-                "Learn how to store and manage application data using MongoDB.",
-            topics: [
-                "Collections",
-                "Documents",
-                "CRUD operations",
-                "Queries",
-                "Database integration",
-            ],
-            duration: "1-2 Weeks",
-        },
-
-        "Express.js": {
-            icon: Code2,
-            description:
-                "Build scalable backend APIs using Express.js.",
-            topics: [
-                "Express fundamentals",
-                "Routing",
-                "Middleware",
-                "REST APIs",
-                "Error handling",
-            ],
-            duration: "1-2 Weeks",
-        },
+        return Target;
     };
 
+
+    // ================= GENERATE ROADMAP =================
+
+    useEffect(() => {
+
+        const generateRoadmap = async () => {
+
+            try {
+
+                setLoading(true);
+                setError(null);
+
+
+                const response = await fetch(
+                    "http://127.0.0.1:8000/api/roadmap/generate",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            role: selectedRole,
+                            priority_skills: prioritySkills,
+                        }),
+                    }
+                );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to generate roadmap"
+                    );
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                if (!result.success) {
+
+                    throw new Error(
+                        "Roadmap generation failed"
+                    );
+
+                }
+
+
+                setRoadmap(
+                    result.roadmap || []
+                );
+
+            } catch (err) {
+
+                console.error(
+                    "Roadmap error:",
+                    err
+                );
+
+                setError(
+                    "Unable to generate your roadmap. Make sure the SkillAI backend is running."
+                );
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+
+        generateRoadmap();
+
+    }, [selectedRole, prioritySkills]);
+
+
+    // ================= LOADING =================
+
+    if (loading) {
+
+        return (
+
+            <div className="roadmap-page">
+
+                <div className="roadmap-loading">
+
+                    <Sparkles size={30} />
+
+                    <h2>
+                        Generating Your Roadmap...
+                    </h2>
+
+                    <p>
+                        SkillAI is creating a personalized
+                        learning path based on your skill gaps.
+                    </p>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    // ================= ERROR =================
+
+    if (error) {
+
+        return (
+
+            <div className="roadmap-page">
+
+                <div className="roadmap-empty">
+
+                    <Target size={30} />
+
+                    <h3>
+                        Roadmap Generation Failed
+                    </h3>
+
+                    <p>
+                        {error}
+                    </p>
+
+                    <Link
+                        to="/skill-gap"
+                        className="roadmap-action"
+                    >
+                        Back to Skill Analysis
+                    </Link>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
     return (
+
         <div className="roadmap-page">
+
 
             {/* ================= HEADER ================= */}
 
@@ -232,9 +228,13 @@ function Roadmap() {
                     to="/skill-gap"
                     className="back-button"
                 >
+
                     <ArrowLeft size={18} />
+
                     Back to Skill Gap
+
                 </Link>
+
 
                 <div className="roadmap-title">
 
@@ -247,8 +247,8 @@ function Roadmap() {
                     </h1>
 
                     <p>
-                        A personalized learning path based on your
-                        current skill gaps.
+                        A personalized learning path based on
+                        your current skill gaps.
                     </p>
 
                 </div>
@@ -260,16 +260,21 @@ function Roadmap() {
 
             <div className="roadmap-summary">
 
+
                 <div className="roadmap-summary-card">
 
                     <Target size={22} />
 
                     <div>
-                        <span>Focus Skills</span>
+
+                        <span>
+                            Focus Skills
+                        </span>
 
                         <strong>
-                            {prioritySkills.length}
+                            {roadmap.length}
                         </strong>
+
                     </div>
 
                 </div>
@@ -280,11 +285,15 @@ function Roadmap() {
                     <BookOpen size={22} />
 
                     <div>
-                        <span>Learning Path</span>
+
+                        <span>
+                            Learning Path
+                        </span>
 
                         <strong>
                             Personalized
                         </strong>
+
                     </div>
 
                 </div>
@@ -295,11 +304,15 @@ function Roadmap() {
                     <Rocket size={22} />
 
                     <div>
-                        <span>Career Goal</span>
+
+                        <span>
+                            Career Goal
+                        </span>
 
                         <strong>
                             {selectedRole}
                         </strong>
+
                     </div>
 
                 </div>
@@ -310,6 +323,7 @@ function Roadmap() {
             {/* ================= ROADMAP ================= */}
 
             <div className="roadmap-container">
+
 
                 <div className="section-header">
 
@@ -328,19 +342,19 @@ function Roadmap() {
                 </div>
 
 
-                {prioritySkills.length === 0 ? (
+                {roadmap.length === 0 ? (
 
                     <div className="roadmap-empty">
 
                         <CheckCircle size={28} />
 
                         <h3>
-                            No priority skills found
+                            No roadmap available
                         </h3>
 
                         <p>
-                            Analyze your skills first to generate
-                            a personalized learning roadmap.
+                            No priority skills were found.
+                            Analyze your skills first.
                         </p>
 
                         <Link
@@ -356,51 +370,59 @@ function Roadmap() {
 
                     <div className="roadmap-list">
 
-                        {prioritySkills.map(
-                            (skill, index) => {
 
-                                const data =
-                                    roadmapData[skill.name];
-
-                                if (!data) {
-                                    return null;
-                                }
+                        {roadmap.map(
+                            (phase, index) => {
 
                                 const Icon =
-                                    data.icon;
+                                    getSkillIcon(
+                                        phase.skill
+                                    );
+
 
                                 const progress =
                                     Math.min(
-                                        skill.current || 0,
+                                        phase.current_level || 0,
                                         100
                                     );
+
 
                                 return (
 
                                     <div
                                         className="roadmap-card"
-                                        key={skill.name}
+                                        key={phase.skill}
                                     >
 
-                                        {/* Timeline */}
+
+                                        {/* TIMELINE */}
 
                                         <div className="roadmap-number">
 
                                             <span>
-                                                {index + 1}
+                                                {phase.phase ||
+                                                    index + 1}
                                             </span>
 
+
                                             {index <
-                                                prioritySkills.length - 1 && (
-                                                <div className="timeline-line" />
+                                                roadmap.length - 1 && (
+
+                                                <div
+                                                    className="timeline-line"
+                                                />
+
                                             )}
 
                                         </div>
 
 
-                                        {/* Content */}
+                                        {/* CONTENT */}
 
                                         <div className="roadmap-content">
+
+
+                                            {/* TITLE */}
 
                                             <div className="roadmap-card-top">
 
@@ -410,14 +432,17 @@ function Roadmap() {
 
                                                 </div>
 
+
                                                 <div>
 
                                                     <p className="phase-label">
-                                                        PHASE {index + 1}
+                                                        PHASE{" "}
+                                                        {phase.phase ||
+                                                            index + 1}
                                                     </p>
 
                                                     <h3>
-                                                        {skill.name}
+                                                        {phase.skill}
                                                     </h3>
 
                                                 </div>
@@ -425,12 +450,16 @@ function Roadmap() {
                                             </div>
 
 
+                                            {/* DESCRIPTION */}
+
                                             <p className="roadmap-description">
-                                                {data.description}
+
+                                                {phase.description}
+
                                             </p>
 
 
-                                            {/* Progress */}
+                                            {/* PROGRESS */}
 
                                             <div className="roadmap-progress">
 
@@ -446,12 +475,14 @@ function Roadmap() {
 
                                                 </div>
 
+
                                                 <div className="progress-bar">
 
                                                     <div
                                                         className="progress-fill"
                                                         style={{
-                                                            width: `${progress}%`,
+                                                            width:
+                                                                `${progress}%`,
                                                         }}
                                                     />
 
@@ -460,7 +491,7 @@ function Roadmap() {
                                             </div>
 
 
-                                            {/* Topics */}
+                                            {/* TOPICS */}
 
                                             <div className="roadmap-topics">
 
@@ -468,9 +499,10 @@ function Roadmap() {
                                                     What you'll learn
                                                 </h4>
 
+
                                                 <div className="topic-list">
 
-                                                    {data.topics.map(
+                                                    {phase.topics?.map(
                                                         (topic) => (
 
                                                             <div
@@ -496,7 +528,7 @@ function Roadmap() {
                                             </div>
 
 
-                                            {/* Duration */}
+                                            {/* DURATION */}
 
                                             <div className="roadmap-duration">
 
@@ -507,17 +539,35 @@ function Roadmap() {
                                                 </span>
 
                                                 <strong>
-                                                    {data.duration}
+                                                    {phase.duration}
                                                 </strong>
 
                                             </div>
+
+
+                                            {/* PRIORITY */}
+
+                                            <div className="roadmap-priority">
+
+                                                <span>
+                                                    Priority:
+                                                </span>
+
+                                                <strong>
+                                                    {phase.priority}
+                                                </strong>
+
+                                            </div>
+
 
                                         </div>
 
                                     </div>
 
                                 );
+
                             }
+
                         )}
 
                     </div>
@@ -527,9 +577,9 @@ function Roadmap() {
             </div>
 
 
-            {/* ================= FOOTER ACTION ================= */}
+            {/* ================= FOOTER ================= */}
 
-            {prioritySkills.length > 0 && (
+            {roadmap.length > 0 && (
 
                 <div className="roadmap-footer">
 
@@ -552,6 +602,7 @@ function Roadmap() {
 
                     </div>
 
+
                     <Link
                         to="/skill-gap"
                         className="roadmap-action"
@@ -564,7 +615,10 @@ function Roadmap() {
             )}
 
         </div>
+
     );
+
 }
+
 
 export default Roadmap;

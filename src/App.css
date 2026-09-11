@@ -2312,3 +2312,83 @@
     align-items: flex-start;
   }
 }
+/* ================= ROADMAP LOADING ================= */
+
+.roadmap-loading {
+  min-height: 70vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.roadmap-loading svg {
+  color: #a855f7;
+
+  margin-bottom: 18px;
+
+  animation: roadmapPulse 1.5s infinite;
+}
+
+.roadmap-loading h2 {
+  color: #ffffff;
+
+  margin-bottom: 10px;
+}
+
+.roadmap-loading p {
+  color: #7f8aa3;
+
+  font-size: 13px;
+}
+
+
+@keyframes roadmapPulse {
+
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+}
+
+
+/* ================= ROADMAP PRIORITY ================= */
+
+.roadmap-priority {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  font-size: 11px;
+
+  color: #7f8aa3;
+}
+
+.roadmap-priority strong {
+  color: #fbbf24;
+}
