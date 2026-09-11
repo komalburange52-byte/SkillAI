@@ -9,10 +9,20 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Dashboard />} />
+        <Route
+          path="/"
+          element={<Dashboard />}
+        />
 
-        <Route path="/skill-gap" element={<SkillGap />} />
-         <Route path="/roadmap" element={<Roadmap />} />
+        <Route
+          path="/skill-gap"
+          element={<SkillGap />}
+        />
+
+        <Route
+          path="/roadmap"
+          element={<Roadmap />}
+        />
 
       </Routes>
     </BrowserRouter>
