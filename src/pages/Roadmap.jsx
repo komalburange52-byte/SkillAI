@@ -34,6 +34,70 @@ function Roadmap() {
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState(null);
+const [completedTopics, setCompletedTopics] = useState(() => {
+
+    const savedProgress =
+        localStorage.getItem(
+            `skillai-roadmap-${selectedRole}`
+        );
+
+    return savedProgress
+        ? JSON.parse(savedProgress)
+        : {};
+
+});
+    // ================= PROGRESS TRACKING =================
+
+const toggleTopic = (skillName, topic) => {
+
+    const key = `${skillName}-${topic}`;
+
+    setCompletedTopics((previous) => {
+
+        const updatedProgress = {
+            ...previous,
+            [key]: !previous[key],
+        };
+
+
+        localStorage.setItem(
+            `skillai-roadmap-${selectedRole}`,
+            JSON.stringify(updatedProgress)
+        );
+
+
+        return updatedProgress;
+
+    });
+
+};
+
+
+const isTopicCompleted = (skillName, topic) => {
+
+    const key = `${skillName}-${topic}`;
+
+    return completedTopics[key] || false;
+
+};
+
+
+const totalTopics = roadmap.reduce(
+    (total, phase) => total + (phase.topics?.length || 0),
+    0
+);
+
+
+const completedCount = Object.values(
+    completedTopics
+).filter(Boolean).length;
+
+
+const overallProgress = totalTopics
+    ? Math.round(
+        (completedCount / totalTopics) * 100
+    )
+    : 0;
 
 
     // ================= ICON MAPPING =================
@@ -318,6 +382,50 @@ function Roadmap() {
                 </div>
 
             </div>
+            {/* ================= OVERALL PROGRESS ================= */}
+
+<div className="roadmap-progress-card">
+
+    <div className="roadmap-progress-header">
+
+        <div>
+
+            <p className="welcome-tag">
+                YOUR PROGRESS
+            </p>
+
+            <h2>
+                Learning Progress
+            </h2>
+
+        </div>
+
+        <strong>
+            {overallProgress}%
+        </strong>
+
+    </div>
+
+
+    <div className="overall-progress-bar">
+
+        <div
+            className="overall-progress-fill"
+            style={{
+                width: `${overallProgress}%`,
+            }}
+        />
+
+    </div>
+
+
+    <p className="progress-summary">
+
+        {completedCount} of {totalTopics} learning topics completed
+
+    </p>
+
+</div>
 
 
             {/* ================= ROADMAP ================= */}
@@ -485,10 +593,12 @@ function Roadmap() {
                                                                 `${progress}%`,
                                                         }}
                                                     />
+                                                    
 
                                                 </div>
 
                                             </div>
+                                            
 
 
                                             {/* TOPICS */}
@@ -502,26 +612,54 @@ function Roadmap() {
 
                                                 <div className="topic-list">
 
-                                                    {phase.topics?.map(
-                                                        (topic) => (
+                                                   {phase.topics?.map(
+    (topic) => {
 
-                                                            <div
-                                                                className="topic-item"
-                                                                key={topic}
-                                                            >
+        const completed =
+            isTopicCompleted(
+                phase.skill,
+                topic
+            );
 
-                                                                <CheckCircle
-                                                                    size={15}
-                                                                />
 
-                                                                <span>
-                                                                    {topic}
-                                                                </span>
+        return (
 
-                                                            </div>
+            <div
+                className={`topic-item ${
+                    completed
+                        ? "completed"
+                        : ""
+                }`}
+                key={topic}
+                onClick={() =>
+                    toggleTopic(
+                        phase.skill,
+                        topic
+                    )
+                }
+            >
 
-                                                        )
-                                                    )}
+                <div className="topic-checkbox">
+
+                    {completed && (
+                        <CheckCircle
+                            size={15}
+                        />
+                    )}
+
+                </div>
+
+
+                <span>
+                    {topic}
+                </span>
+
+            </div>
+
+        );
+
+    }
+)}
 
                                                 </div>
 
